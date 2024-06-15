@@ -15,11 +15,13 @@ class Solution {
     for (int i = 0; i < Capital.length; ++i)
       minHeap.offer(new T(Profits[i], Capital[i]));
 
-    while (k-- > 0) {
-      while (!minHeap.isEmpty() && minHeap.peek().cap <= W)
+    for (int i = 0; i < k; ++i) {
+      while (!minHeap.isEmpty() && minHeap.peek().cap <= W) {
         maxHeap.offer(minHeap.poll());
-      if (maxHeap.isEmpty())
+      }
+      if (maxHeap.isEmpty()) {
         break;
+      }
       W += maxHeap.poll().pro;
     }
 
