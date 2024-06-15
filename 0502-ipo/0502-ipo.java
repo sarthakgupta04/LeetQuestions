@@ -9,20 +9,20 @@ class T {
 
 class Solution {
   public int findMaximizedCapital(int k, int W, int[] Profits, int[] Capital) {
-    Queue<T> minHeap = new PriorityQueue<>((a, b) -> a.cap - b.cap);
-    Queue<T> maxHeap = new PriorityQueue<>((a, b) -> b.pro - a.pro);
+    Queue<T> minHeap = new PriorityQueue<>((a, b) -> Integer.compare(a.cap, b.cap));
+    Queue<T> maxHeap = new PriorityQueue<>((a, b) -> Integer.compare(b.pro, a.pro));
 
-    for (int i = 0; i < Capital.length; ++i)
+    for (int i = 0; i < Profits.length; ++i)
       minHeap.offer(new T(Profits[i], Capital[i]));
 
-    for (int i = 0; i < k; ++i) {
+    while (k > 0) {
       while (!minHeap.isEmpty() && minHeap.peek().cap <= W) {
         maxHeap.offer(minHeap.poll());
       }
-      if (maxHeap.isEmpty()) {
-        break;
-      }
+
+      if (maxHeap.isEmpty()) break;
       W += maxHeap.poll().pro;
+      k--;
     }
 
     return W;
