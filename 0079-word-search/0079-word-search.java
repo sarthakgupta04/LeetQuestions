@@ -1,28 +1,37 @@
-class Solution {
-  public boolean exist(char[][] board, String word) {
-    for (int i = 0; i < board.length; ++i)
-      for (int j = 0; j < board[0].length; ++j)
-        if (dfs(board, word, i, j, 0))
-          return true;
-    return false;
-  }
+public class Solution {
+    public boolean exist(char[][] board, String word) {
+        int row = board.length;
+        int col = board[0].length;
 
-  private boolean dfs(char[][] board, String word, int i, int j, int s) {
-    if (i < 0 || i == board.length || j < 0 || j == board[0].length)
-      return false;
-    if (board[i][j] != word.charAt(s) || board[i][j] == '*')
-      return false;
-    if (s == word.length() - 1)
-      return true;
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (bcsFunc(board, word, i, j, 0)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-    final char cache = board[i][j];
-    board[i][j] = '*';
-    final boolean isExist = dfs(board, word, i + 1, j, s + 1) || //
-                            dfs(board, word, i - 1, j, s + 1) || //
-                            dfs(board, word, i, j + 1, s + 1) || //
-                            dfs(board, word, i, j - 1, s + 1);
-    board[i][j] = cache;
+    private boolean bcsFunc(char[][] board, String word, int x, int y, int z) {
+        if (z == word.length()) return true;
 
-    return isExist;
-  }
+        int row = board.length;
+        int col = board[0].length;
+
+        if (x < 0 || x >= row || y < 0 || y >= col || word.charAt(z) != board[x][y]) {
+            return false;
+        }
+
+        char visited = board[x][y];
+        board[x][y] = '.';
+
+        boolean result = bcsFunc(board, word, x + 1, y, z + 1) ||
+                         bcsFunc(board, word, x - 1, y, z + 1) ||
+                         bcsFunc(board, word, x, y + 1, z + 1) ||
+                         bcsFunc(board, word, x, y - 1, z + 1);
+
+        board[x][y] = visited;
+        return result;
+    }
 }
