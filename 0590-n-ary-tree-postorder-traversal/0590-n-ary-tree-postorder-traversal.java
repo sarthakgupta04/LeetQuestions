@@ -18,22 +18,19 @@ class Node {
 */
 
 class Solution {
-  public List<Integer> postorder(Node root) {
-    if (root == null)
-      return new ArrayList<>();
+    public List<Integer> postorder(Node root) {
+        if (root == null) return new ArrayList<>();
 
-    List<Integer> ans = new ArrayList<>();
-    Deque<Node> stack = new ArrayDeque<>();
-    stack.push(root);
+        List<Integer> res = new ArrayList<>();
+        dfs(root, res);
 
-    while (!stack.isEmpty()) {
-      root = stack.pop();
-      ans.add(root.val);
-      for (Node child : root.children)
-        stack.push(child);
+        return res;
     }
 
-    Collections.reverse(ans);
-    return ans;
-  }
+    private void dfs(Node root, List<Integer> res) {
+        for (Node child : root.children) {
+            dfs(child, res);
+        }
+        res.add(root.val);
+    }
 }
